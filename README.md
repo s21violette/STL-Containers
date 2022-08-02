@@ -2,92 +2,29 @@
 
 Here were created following classes: List, Map, Queue, Set, Stack and Vector
 
+### List
 List is a sequence container that stores a set of elements with arbitrary size, in the form of nodes connected in sequence by pointers. Each node stores a value corresponding to an element in the list, and a pointer to the next element.
 
-<summary>Specification</summary>
-<br />
+### Map
+A map (dictionary) is an associative container that stores key-value pairs sorted in ascending order. It means that each element is associated with some unique key, and its position in the map is determined by its key. Maps come in handy when you want to associate elements with some other value (not an index).
+For example, an enterprise is purchasing equipment, and each item has to be purchased more than once. In this case, it is convenient to use a map with a position identifier - purchase volume pair. Here the identifier can be not only a number, but also a string. So, the search is not performed by an index, as in an array, but by an identifier, i.e. a word.
 
-*List Member type*
+### Queue
+Queue is a container with elements organized according to FIFO (First-In, First-Out) principle. Just like a list, an object of the queue container class has pointers to the "tail" and "head" of the queue, but the deletion is performed strictly from the "head", and the addition of new elements is performed strictly in the "tail". It is convenient to think of a queue as a kind of pipe, with elements entering at one end and exiting at another one.
 
-This table contains in-class type overrides (typical for the standard STL library) that are adopted to make class code easy to understand:
+### Set
+Set is an associative container of unique elements. This means that the same element can’t be added to a set twice. The set container is associative, because it is also represented as a tree like the map container, and therefore also stores elements in a sorted order.
+The difference between a map and a set is that in the set the value itself is unique and not the key as well as the value in the tree is not checked by the key, but by the value itself. There is an appropriate exception when you add an already existing element to a set.
 
-| Member type            | definition                                                                             |
-|------------------------|----------------------------------------------------------------------------------------|
-| `value_type`             | `T` defines the type of an element (T is a template parameter)                                  |
-| `reference`              | `T &` defines the type of the reference to an element                                                             |
-| `const_reference`        | `const T &` defines the type of the constant reference                                         |
-| `iterator`               | internal class `ListIterator<T>` defines the type for iterating through the container                                                 |
-| `const_iterator`         | internal class `ListConstIterator<T>` defines the constant type for iterating through the container                                           |
-| `size_type`              | `size_t` defines the type of the container size (standard type is size_t) |
+### Stack
+Stack is a container with elements organized according to LIFO (Last-In, First-Out) principle. A stack container class object contains pointers to the "head" of the stack; removing and adding elements is done strictly from the "head". You can think of the stack as a glass or a pipe with one sealed end: in order to get to the element placed in the container first, you must take out all the elements on top.
 
-*List Functions*
+### Vector
+Vector is a sequence container that encapsulates a dynamic array for more user-friendly usage. This container does not require manual memory control like standard dynamic arrays, but instead allows any number of elements to be added via `push_back()` and `insert()` methods and, unlike a list, allows any container element to be accessed directly by an index. Elements in a vector are stored sequentially, allowing iterating over the vector not only through the provided iterator, but also by manually shifting the pointer to the vector element. So, a pointer to the first element of a vector can be passed as an argument to any function that expects an ordinary array as an argument. The dynamic resizing of the array does not occur every time an element is added or removed, only when the specified buffer size is exceeded. So, the vector stores two values for a size: the size of the stored array (`size()` method) and the size of the buffer (`capacity()` method).
 
-This table contains the main public methods for interacting with the class:
+### Array
+Array is a sequence container that encapsulates a static array. You cannot add new elements to an array container, you can only modify the value of the original ones. In terms of interaction, a container array combines the obvious properties of a static array with the main advantage of container classes - a clearer organisation of data. For example, an Array container stores the size of an array and provides iterators. Just like a vector, an array occupies a sequential part of memory and can be passed to a function as a standard array in C. The second template argument of the array class is its actual size.
 
-| Functions      | Definition                                      |
-|----------------|-------------------------------------------------|
-| `list()`  | default constructor, creates an empty list                                  |
-| `list(size_type n)`  | parameterized constructor, creates the list of size n                                 |
-| `list(std::initializer_list<value_type> const &items)`  | initializer list constructor, creates a list initizialized using std::initializer_list<T>    |
-| `list(const list &l)`  | copy constructor  |
-| `list(list &&l)`  | move constructor  |
-| `~list()`  | destructor  |
-| `operator=(list &&l)`      | assignment operator overload for moving an object                                |
+### Multiset
+Multiset is an associative container that follows the logic of a set, but allows identical elements to be stored. This container is different from a list or vector because the elements in the multiset are sorted instantly, just as in a set. But just like a set, a multiset does not allow you to refer to an element by its index, but requires referring to its value, which can be repeated in a multiset.
 
-*List Element access*
-
-This table contains the public methods for accessing the elements of the class:
-
-| Element access | Definition                                      |
-|----------------|-------------------------------------------------|
-| `const_reference front()`          | access the first element                        |
-| `const_reference back()`           | access the last element                         |
-
-*List Iterators*
-
-This table contains the public methods for iterating over class elements (access to iterators):
-
-| Iterators      | Definition                                      |
-|----------------|-------------------------------------------------|
-| `iterator begin()`    | returns an iterator to the beginning            |
-| `iterator end()`        | returns an iterator to the end                  |
-
-*List Capacity*
-
-This table contains the public methods for accessing the container capacity information:
-
-| Capacity       | Definition                                      |
-|----------------|-------------------------------------------------|
-| `bool empty()`          | checks whether the container is empty           |
-| `size_type size()`           | returns the number of elements                  |
-| `size_type max_size()`       | returns the maximum possible number of elements |
-
-*List Modifiers*
-
-This table contains the public methods for modifying a container:
-
-| Modifiers      | Definition                                      |
-|----------------|-------------------------------------------------|
-| `void clear()`          | clears the contents                             |
-| `iterator insert(iterator pos, const_reference value)`         | inserts elements into concrete pos and returns the iterator that points to the new element     |
-| `void erase(iterator pos)`          | erases an element at pos                                 |
-| `void push_back(const_reference value)`      | adds an element to the end                      |
-| `void pop_back()`   | removes the last element        |
-| `void push_front(const_reference value)`      | adds an element to the head                      |
-| `void pop_front()`   | removes the first element        |
-| `void swap(list& other)`                   | swaps the contents                                                                     |
-| `void merge(list& other)`                   | merges two sorted lists                                                                      |
-| `void splice(const_iterator pos, list& other)`                   | transfers elements from list other starting from pos             |
-| `void reverse()`                   | reverses the order of the elements              |
-| `void unique()`                   | removes consecutive duplicate elements               |
-| `void sort()`                   | sorts the elements                |
-
-</details>
-
-
-| Modifiers      | Definition                                      | Containers |
-|----------------|-------------------------------------------------| -------------------------------------------|
-| `iterator emplace(const_iterator pos, Args&&... args)`          | inserts new elements into the container directly before `pos`  | List, Vector |
-| `void emplace_back(Args&&... args)`          | appends new elements to the end of the container  | List, Vector, Queue |
-| `void emplace_front(Args&&... args)`          | appends new elements to the top of the container  | List, Stack |
-| `vector<std::pair<iterator,bool>> emplace(Args&&... args)`          | inserts new elements into the container  | Map, Set, Multiset |
